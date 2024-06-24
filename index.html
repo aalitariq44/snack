@@ -40,11 +40,36 @@
             font-size: 18px;
             cursor: pointer;
         }
+        #controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .control-button {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            background-color: #ddd;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #up { grid-column: 2; }
+        #left { grid-column: 1; grid-row: 2; }
+        #right { grid-column: 3; grid-row: 2; }
+        #down { grid-column: 2; grid-row: 3; }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="300" height="300"></canvas>
     <div id="score">النقاط: 0</div>
+    <div id="controls">
+        <button id="up" class="control-button">↑</button>
+        <button id="left" class="control-button">←</button>
+        <button id="right" class="control-button">→</button>
+        <button id="down" class="control-button">↓</button>
+    </div>
     <div id="gameOver">
         <h2>انتهت اللعبة</h2>
         <p id="finalScore"></p>
@@ -140,38 +165,43 @@
             scoreElement.textContent = `النقاط: ${score}`;
         }
 
-        function changeDirection(event) {
-            const LEFT_KEY = 37;
-            const RIGHT_KEY = 39;
-            const UP_KEY = 38;
-            const DOWN_KEY = 40;
-
-            const keyPressed = event.keyCode;
-
+        function changeDirection(direction) {
             const goingUp = dy === -1;
             const goingDown = dy === 1;
             const goingRight = dx === 1;
             const goingLeft = dx === -1;
 
-            if (keyPressed === LEFT_KEY && !goingRight) {
+            if (direction === 'left' && !goingRight) {
                 dx = -1;
                 dy = 0;
             }
-            if (keyPressed === UP_KEY && !goingDown) {
+            if (direction === 'up' && !goingDown) {
                 dx = 0;
                 dy = -1;
             }
-            if (keyPressed === RIGHT_KEY && !goingLeft) {
+            if (direction === 'right' && !goingLeft) {
                 dx = 1;
                 dy = 0;
             }
-            if (keyPressed === DOWN_KEY && !goingUp) {
+            if (direction === 'down' && !goingUp) {
                 dx = 0;
                 dy = 1;
             }
         }
 
-        document.addEventListener('keydown', changeDirection);
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            if (key === 'ArrowLeft') changeDirection('left');
+            if (key === 'ArrowUp') changeDirection('up');
+            if (key === 'ArrowRight') changeDirection('right');
+            if (key === 'ArrowDown') changeDirection('down');
+        });
+
+        document.getElementById('left').addEventListener('click', () => changeDirection('left'));
+        document.getElementById('up').addEventListener('click', () => changeDirection('up'));
+        document.getElementById('right').addEventListener('click', () => changeDirection('right'));
+        document.getElementById('down').addEventListener('click', () => changeDirection('down'));
+
         restartButton.addEventListener('click', () => {
             initGame();
             gameLoop = setInterval(drawGame, 100);
