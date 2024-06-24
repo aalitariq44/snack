@@ -197,9 +197,9 @@
             if (key === 'ArrowDown') changeDirection('down');
         });
 
-        document.getElementById('left').addEventListener('click', () => changeDirection('left'));
+        document.getElementById('left').addEventListener('click', () => changeDirection('right'));
         document.getElementById('up').addEventListener('click', () => changeDirection('up'));
-        document.getElementById('right').addEventListener('click', () => changeDirection('right'));
+        document.getElementById('right').addEventListener('click', () => changeDirection('lift'));
         document.getElementById('down').addEventListener('click', () => changeDirection('down'));
 
         restartButton.addEventListener('click', () => {
